@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/Todo.Api.Tests/Todo.Api.Tests.csproj" Id="4309ffdf-4d39-40e4-8bc5-07e4c9e77853" />
+    <Project Path="backend/Todo.Api/Todo.Api.csproj" />
+  </Folder>
+  <Folder Name="/frontend/" />
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+</Solution>
