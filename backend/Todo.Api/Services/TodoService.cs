@@ -11,7 +11,7 @@ namespace Todo.Api.Services
     /// including creating, retrieving, updating, and deleting items. 
     /// </summary>
     public class TodoService : ITodoService
-    {        
+    {
         private readonly TodoContext _context;
         private readonly IMapper  _mapper;
         private readonly ILogger<TodoService> _logger;
@@ -31,10 +31,12 @@ namespace Todo.Api.Services
         /// Gets all To Do items from the data store and returns them as an enumerable collection.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<TodoItem>> GetAllAsync()
+        public async Task<IEnumerable<TodoItem>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Retrieving all To Do items from the database.");
-            return _context.TodoItems.ToList();
+            return await _context.TodoItems
+                                 .AsNoTracking()
+                                 .ToListAsync(cancellationToken);
         }
 
         /// <summary>
@@ -42,10 +44,12 @@ namespace Todo.Api.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<TodoItem?> GetByIdAsync(int id)
+        public async Task<TodoItem?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Retrieving To Do item with ID {Id} from the database.", id);
-            return await _context.TodoItems.FindAsync(id);
+            return await _context.TodoItems
+                                 .AsNoTracking()
+                                 .SingleOrDefaultAsync(t => t.Id == id, cancellationToken);
         }
         
         /// <summary>
@@ -53,25 +57,19 @@ namespace Todo.Api.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<TodoItem> CreateAsync(TodoItemCreateDto dto)
+        public async Task<TodoItem> CreateAsync(TodoItemCreateDto dto, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Creating a new To Do item with title: {Title}", dto.Title);
             var item = _mapper.Map<TodoItem>(dto);
             _context.TodoItems.Add(item);
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
                 return item;
             }
             catch (DbUpdateException dbEx)
             {
-                _logger.LogError(dbEx, "Database update error while creating To Do item");
-                // rethrow so global middleware handles the response; preserve stack trace
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unexpected error while creating To Do item");
+                _logger.LogError(dbEx, "Database error while creating todo item");
                 throw;
             }
         }
@@ -81,31 +79,31 @@ namespace Todo.Api.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<TodoItem?> UpdateAsync(TodoItemUpdateDto dto)
+        public async Task<TodoItem?> UpdateAsync(TodoItemUpdateDto dto, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Updating To Do item with ID {Id}", dto.Id);
-            var existingItem = await _context.TodoItems.FindAsync(dto.Id);
+            var existingItem = await _context.TodoItems.FindAsync(new object[] { dto.Id }, cancellationToken);
             if (existingItem == null)
             {
                 _logger.LogWarning("To Do item with ID {Id} not found for update.", dto.Id);
                 return null;
             }
+
             _mapper.Map(dto, existingItem);
 
             try
             {
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("To Do item with ID {Id} updated successfully.", dto.Id);
+                await _context.SaveChangesAsync(cancellationToken);
                 return existingItem;
+            }
+            catch (DbUpdateConcurrencyException concEx)
+            {
+                _logger.LogWarning(concEx, "Concurrency conflict updating To Do item {Id}", dto.Id);
+                throw;
             }
             catch (DbUpdateException dbEx)
             {
-                _logger.LogError(dbEx, "Database update error while updating To Do item with ID {Id}", dto.Id);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unexpected error while updating To Do item with ID {Id}", dto.Id);
+                _logger.LogError(dbEx, "Database error while updating todo item {Id}", dto.Id);
                 throw;
             }
         }
@@ -115,30 +113,26 @@ namespace Todo.Api.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Deleting To Do item with ID {Id}", id);
-            var existing = await _context.TodoItems.FindAsync(id);
+            var existing = await _context.TodoItems.FindAsync(new object[] { id }, cancellationToken);
             if (existing == null)
             {
                 _logger.LogWarning("To Do item with ID {Id} not found for deletion.", id);
                 return false;
             }
+
             _context.TodoItems.Remove(existing);
+
             try
             {
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("To Do item with ID {Id} deleted successfully.", id);
+                await _context.SaveChangesAsync(cancellationToken);
                 return true;
             }
             catch (DbUpdateException dbEx)
             {
-                _logger.LogError(dbEx, "Database update error while deleting To Do item with ID {Id}", id);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unexpected error while deleting To Do item with ID {Id}", id);
+                _logger.LogError(dbEx, "Database error while deleting todo item {Id}", id);
                 throw;
             }
         }
