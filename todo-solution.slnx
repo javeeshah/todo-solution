@@ -10,7 +10,6 @@
     <File Path="frontend/todo-ui/angular.json" />
     <File Path="frontend/todo-ui/package-lock.json" />
     <File Path="frontend/todo-ui/package.json" />
-    <File Path="frontend/todo-ui/README.md" />
     <File Path="frontend/todo-ui/tsconfig.app.json" />
     <File Path="frontend/todo-ui/tsconfig.json" />
     <File Path="frontend/todo-ui/tsconfig.spec.json" />
