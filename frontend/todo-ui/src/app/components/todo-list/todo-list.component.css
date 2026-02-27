@@ -1,0 +1,7 @@
+/* reuse global tokens; local tweaks for component */
+.todo-input-row { align-items: center; }
+.todo-list { margin-top: 8px; }
+.todo-item { display:flex; align-items:center; gap:12px; padding: 10px; border-radius:8px; }
+.todo-title { font-size: 1rem; }
+.todo-edit input[type="text"] { padding:6px 8px; border-radius:6px; border:1px solid #e6e9ef; }
+.icon-btn { background: transparent; border: none; cursor:pointer; color: #6b7280; }

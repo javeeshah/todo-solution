@@ -37,9 +37,9 @@ namespace Todo.Api.Controllers
         /// <returns>List of TodoItemDto</returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<TodoItemDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var items = await _todoService.GetAllAsync();
+            var items = await _todoService.GetAllAsync(cancellationToken);
             return Ok(_mapper.Map<List<TodoItemDto>>(items));
         }
 
@@ -52,9 +52,9 @@ namespace Todo.Api.Controllers
         [HttpGet("{id:int}")]
         [ProducesErrorResponseType(typeof(NotFoundResult))]
         [ProducesResponseType(typeof(TodoItemDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
         {
-            var item = await _todoService.GetByIdAsync(id);
+            var item = await _todoService.GetByIdAsync(id, cancellationToken);
             if (item == null)
                 return NotFound();
 
@@ -70,12 +70,12 @@ namespace Todo.Api.Controllers
         /// <param name="dtoItem"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TodoItemCreateDto dtoItem)
+        public async Task<IActionResult> Create([FromBody] TodoItemCreateDto dtoItem, CancellationToken cancellationToken)
         {
             // ApiController + FluentValidation produce ValidationProblemDetails automatically,
             // so manual ModelState checks are not required here.
 
-            var createdItem = await _todoService.CreateAsync(dtoItem);
+            var createdItem = await _todoService.CreateAsync(dtoItem, cancellationToken);
             var resultDto = _mapper.Map<TodoItemDto>(createdItem);
             return CreatedAtAction(nameof(GetById), new { id = resultDto.Id }, resultDto);
         }
@@ -90,7 +90,7 @@ namespace Todo.Api.Controllers
         [ProducesResponseType(typeof(TodoItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [FromBody] TodoItemUpdateDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] TodoItemUpdateDto dto, CancellationToken cancellationToken)
         {
             if (id != dto.Id) 
             {
@@ -103,16 +103,16 @@ namespace Todo.Api.Controllers
                 return BadRequest(problem);
             }
 
-            var updated = await _todoService.UpdateAsync(dto);
+            var updated = await _todoService.UpdateAsync(dto, cancellationToken);
             return updated == null ? NotFound() : Ok(_mapper.Map<TodoItemDto>(updated));
         }
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var deleted = await _todoService.DeleteAsync(id);
+            var deleted = await _todoService.DeleteAsync(id, cancellationToken);
             return deleted ? NoContent() : NotFound();
         }
     }

@@ -3,7 +3,52 @@
     <Project Path="backend/Todo.Api.Tests/Todo.Api.Tests.csproj" Id="4309ffdf-4d39-40e4-8bc5-07e4c9e77853" />
     <Project Path="backend/Todo.Api/Todo.Api.csproj" />
   </Folder>
-  <Folder Name="/frontend/" />
+  <Folder Name="/frontend/">
+    <File Path="frontend/todo-ui/.editorconfig" />
+    <File Path="frontend/todo-ui/.gitignore" />
+    <File Path="frontend/todo-ui/.prettierrc" />
+    <File Path="frontend/todo-ui/angular.json" />
+    <File Path="frontend/todo-ui/package-lock.json" />
+    <File Path="frontend/todo-ui/package.json" />
+    <File Path="frontend/todo-ui/README.md" />
+    <File Path="frontend/todo-ui/tsconfig.app.json" />
+    <File Path="frontend/todo-ui/tsconfig.json" />
+    <File Path="frontend/todo-ui/tsconfig.spec.json" />
+  </Folder>
+  <Folder Name="/frontend/.vscode/">
+    <File Path="frontend/todo-ui/.vscode/extensions.json" />
+    <File Path="frontend/todo-ui/.vscode/launch.json" />
+    <File Path="frontend/todo-ui/.vscode/mcp.json" />
+    <File Path="frontend/todo-ui/.vscode/tasks.json" />
+  </Folder>
+  <Folder Name="/frontend/public/">
+    <File Path="frontend/todo-ui/public/favicon.ico" />
+  </Folder>
+  <Folder Name="/frontend/src/">
+    <File Path="frontend/todo-ui/src/index.html" />
+    <File Path="frontend/todo-ui/src/main.ts" />
+    <File Path="frontend/todo-ui/src/styles.css" />
+  </Folder>
+  <Folder Name="/frontend/src/app/">
+    <File Path="frontend/todo-ui/src/app/app.config.ts" />
+    <File Path="frontend/todo-ui/src/app/app.css" />
+    <File Path="frontend/todo-ui/src/app/app.html" />
+    <File Path="frontend/todo-ui/src/app/app.routes.ts" />
+    <File Path="frontend/todo-ui/src/app/app.spec.ts" />
+    <File Path="frontend/todo-ui/src/app/app.ts" />
+  </Folder>
+  <Folder Name="/frontend/src/app/components/" />
+  <Folder Name="/frontend/src/app/components/todo-list/">
+    <File Path="frontend/todo-ui/src/app/components/todo-list/todo-list.component.css" />
+    <File Path="frontend/todo-ui/src/app/components/todo-list/todo-list.component.html" />
+    <File Path="frontend/todo-ui/src/app/components/todo-list/todo-list.component.ts" />
+  </Folder>
+  <Folder Name="/frontend/src/app/models/">
+    <File Path="frontend/todo-ui/src/app/models/todo.model.ts" />
+  </Folder>
+  <Folder Name="/frontend/src/app/services/">
+    <File Path="frontend/todo-ui/src/app/services/todo.service.ts" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="README.md" />
   </Folder>
