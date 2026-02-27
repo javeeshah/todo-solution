@@ -1,20 +1,22 @@
 # Todo Solution
 
 ## Project overview
-Simple To‑Do API and frontend sample for managing tasks (create, read, update, delete). Backend is ASP.NET Core Web API with an in‑memory database used for development and demo. Frontend is an Angular single‑page app that calls the API.
+A Simple To‑Do app with API and frontend SPA app for managing tasks (create, read, update, delete). Backend is in .NET 8 Web API with EF Core in‑memory database used for development and demo. Frontend is an Angular 21.2.0 - SPA that calls the .NET API.
 
 ## Tech stack
 - Backend: .NET 8+ (ASP.NET Core Web API), Entity Framework Core (InMemory provider)
 - Mapping/Validation: AutoMapper, FluentValidation (Added to demonstrate common patterns, not strictly required for a simple API)
 - Logging: Microsoft.Extensions.Logging
-- Frontend: Angular SPA
-- Tests: NUnit
+- Frontend: Angular 21.2.0
+- Tests: NUnit (Unit and Integration Tests)
 
-## How to run backend (Windows)
+## How to run backend (API)
 1. Open a terminal in the repository root:
    - dotnet restore
    - dotnet build
 2. Run:
+   - Open Todo.Api in Visual Studio and run it.  
+   - Note the port assigned by Visual Studio (e.g., https://localhost:7123). 
    - dotnet run --project backend/Todo.Api
 3. Development notes:
    - The API uses an in‑memory EF provider by default (`UseInMemoryDatabase`).
@@ -22,12 +24,13 @@ Simple To‑Do API and frontend sample for managing tasks (create, read, update,
    - To run with Development environment:
      - PowerShell: `$env:ASPNETCORE_ENVIRONMENT='Development'; dotnet run --project backend/Todo.Api`
 
-## How to run frontend
-- frontend folder (e.g. `frontend`):
-  - cd frontend
+## How to run frontend (ToDo UI)
+- frontend/todo-ui folder (e.g. `frontend/todo-ui`):
+  - cd frontend/todo-ui
   - npm install
   - npm start
-- Confirm the frontend is configured to call the backend API base URL (CORS may be required).
+- Update target element value in proxy.conf.json with the API URL:
+- apiUrl: 'https://localhost:<your-api-port>'
 
 ## API endpoints
 Base route: `/api/todo`
@@ -70,7 +73,7 @@ Validation errors and unexpected errors are reported using RFC 7807 ProblemDetai
   - Middleware/ (global exception handling)  
   - Program.cs
 - frontend/ (Angular SPA)
-- tests/ (unit tests)
+- tests/ (unit/integration tests)
 
 ## Testing instructions
 - Unit tests:
