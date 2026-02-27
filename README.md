@@ -16,7 +16,7 @@ A Simple To‑Do app with API and frontend SPA app for managing tasks (create, r
    - dotnet build
 2. Run:
    - Open Todo.Api in Visual Studio and run it.  
-   - Note the port assigned by Visual Studio (e.g., https://localhost:7123). 
+   - Note the port assigned by Visual Studio (e.g., https://localhost:7079). 
    - dotnet run --project backend/Todo.Api
 3. Development notes:
    - The API uses an in‑memory EF provider by default (`UseInMemoryDatabase`).
@@ -29,7 +29,7 @@ A Simple To‑Do app with API and frontend SPA app for managing tasks (create, r
   - cd frontend/todo-ui
   - npm install
   - npm start
-- Update target element value in proxy.conf.json with the API URL:
+- Update the API Base URL in proxy.conf.json
 - apiUrl: 'https://localhost:<your-api-port>'
 
 ## API endpoints
