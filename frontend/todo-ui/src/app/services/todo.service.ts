@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TodoItemDto, TodoItemCreateDto, TodoItemUpdateDto } from '../models/todo.model';
@@ -8,8 +8,7 @@ import { TodoItemDto, TodoItemCreateDto, TodoItemUpdateDto } from '../models/tod
 })
 export class TodoService {
   private base = '/api/todo';
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAll(): Observable<TodoItemDto[]> {
     return this.http.get<TodoItemDto[]>(this.base);
