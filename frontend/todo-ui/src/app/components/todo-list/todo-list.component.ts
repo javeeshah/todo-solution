@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TodoService } from '../../services/todo.service';
@@ -7,11 +7,15 @@ import { TodoItemDto, TodoItemCreateDto, TodoItemUpdateDto } from '../../models/
 @Component({
   selector: 'todo-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css']
+  styleUrl: './todo-list.component.css'
 })
 export class TodoListComponent {
+  private svc = inject(TodoService);
   items = signal<TodoItemDto[]>([]);
   loading = signal(false);
   newTitle = signal('');
@@ -19,7 +23,7 @@ export class TodoListComponent {
   editTitle = signal('');
   editComplete = signal(false);
 
-  constructor(private svc: TodoService) {
+  constructor() {
     this.load();
   }
 
