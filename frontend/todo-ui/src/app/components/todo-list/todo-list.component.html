@@ -1,0 +1,36 @@
+<div class="todo-app">
+  <div class="todo-header">
+    <h1>To‑Do Dashboard</h1>
+    <div class="todo-sub">Manage your tasks</div>
+  </div>
+
+  <div class="todo-input-row">
+    <div class="todo-input">
+      <input type="text" placeholder="Add a todo..." [(ngModel)]="newTitle" [ngModelOptions]="{standalone:true}" />
+    </div>
+    <button class="btn btn-primary" (click)="add()">Add</button>
+  </div>
+
+  <ul class="todo-list">
+    <li *ngFor="let item of items()">
+    <div class="todo-item" [class.completed]="item.isComplete">
+
+        <div class="todo-content">
+        <div *ngIf="editingId() !== item.id" class="todo-title">{{ item.title }}</div>
+
+        <div *ngIf="editingId() === item.id" class="todo-edit">
+            <input type="text" [(ngModel)]="editTitle" [ngModelOptions]="{standalone:true}" />
+            <label><input type="checkbox" [(ngModel)]="editComplete" [ngModelOptions]="{standalone:true}" /> Done</label>
+        </div>
+        </div>
+        <div class="todo-actions">
+            <button class="icon-btn" *ngIf="editingId() !== item.id" (click)="startEdit(item)">Edit</button>
+            <button class="icon-btn" *ngIf="editingId() === item.id" (click)="saveEdit()">Save</button>
+            <button class="icon-btn" *ngIf="editingId() === item.id" (click)="cancelEdit()">Cancel</button>
+            <button class="icon-btn" (click)="remove(item.id)">Delete</button>
+        </div>
+    </div>
+    </li>
+  </ul>
+  <div *ngIf="items().length === 0" class="empty">No todos yet — add one!</div>
+</div>
