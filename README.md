@@ -73,6 +73,11 @@ Validation errors and unexpected errors are reported using RFC 7807 ProblemDetai
   - Middleware/ (global exception handling)  
   - Program.cs
 - frontend/ (Angular SPA)
+  - src/ (Angular app source)
+    - app/components (UI page components)
+    - app/services (API service for calling backend)
+    - app/models (Model Classes and DTOs)
+  - proxy.conf.json (API proxy configuration)
 - tests/ (unit/integration tests)
 
 ## Testing instructions
