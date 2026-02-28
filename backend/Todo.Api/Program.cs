@@ -1,16 +1,41 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Todo.Api.JwtToken;
+using Todo.Api.Middleware;
 using Todo.Api.Repositories;
 using Todo.Api.Services;
 using Todo.Api.Validators;
-using Todo.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//Add JWT Configuration
+var jwtConfiguration = builder.Configuration.GetSection("jwt");
+var key = Encoding.UTF8.GetBytes(jwtConfiguration["Key"]);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtConfiguration["issuer"],
+            ValidAudience = jwtConfiguration["audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 // Health checks
 builder.Services.AddHealthChecks();
@@ -40,6 +65,8 @@ builder.Services.AddDbContext<TodoContext>(options =>
 
 // Register the TodoService for dependency injection
 builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
