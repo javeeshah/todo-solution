@@ -15,6 +15,10 @@ builder.Services.AddControllers();
 // Health checks
 builder.Services.AddHealthChecks();
 
+//Add Console Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // CORS policy to allow requests from local only. Add more for production as needed.
 builder.Services.AddCors(options =>
 {
