@@ -15,14 +15,19 @@ builder.Services.AddControllers();
 // Health checks
 builder.Services.AddHealthChecks();
 
-// CORS - demo policy, restrict for production
+// CORS policy to allow requests from local only. Add more for production as needed.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocal", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        // Adjust the port as needed for your frontend
+        policy
+        .WithOrigins(
+            "http://localhost:4200", 
+            "https://127.0.01:4200"
+        )
+        .WithMethods("GET", "POST", "PUT", "DELETE")
+        .WithHeaders("content-type", "x-requested-wtih");
     });
 });
 

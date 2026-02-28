@@ -30,7 +30,6 @@
   </Folder>
   <Folder Name="/frontend/src/app/">
     <File Path="frontend/todo-ui/src/app/app.config.ts" />
-    <File Path="frontend/todo-ui/src/app/app.css" />
     <File Path="frontend/todo-ui/src/app/app.html" />
     <File Path="frontend/todo-ui/src/app/app.routes.ts" />
     <File Path="frontend/todo-ui/src/app/app.spec.ts" />
